@@ -22,5 +22,9 @@ public class StateWalk : State
 
     public override void OnUpdate()
     {
+        if( !machine.IsMoving )
+        {
+            machine.ChangeState( StateMachineV3.STATE_IDLE );
+        }
     }
 }

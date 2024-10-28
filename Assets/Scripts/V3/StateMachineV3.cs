@@ -14,6 +14,11 @@ public class StateMachineV3 : MonoBehaviour
     public const string STATE_IDLE = nameof( StateIdle );
     public const string STATE_WALK = nameof( StateWalk );
 
+    public bool IsMoving { 
+        get { return _moveDirection != 0f; }
+    }
+    private float _moveDirection = 0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -39,6 +44,31 @@ public class StateMachineV3 : MonoBehaviour
         currentState.OnTriggerEnter();
     }
 
+#if UNITY_EDITOR
+    public void OnGUI()
+    {
+        GUILayout.TextArea( currentState.ToString() );
+        GUILayout.TextArea( "Toto" );
+    }
+#endif
+
+    private void OnDrawGizmos()
+    {
+        
+        if( IsMoving )
+        {
+            Gizmos.color = Color.green;
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+        }
+
+        Gizmos.DrawCube( transform.position, Vector3.one );
+
+        Gizmos.DrawLine( transform.position, transform.right );
+    }
+
     public void ChangeState( string stateName )
     {
         /*if( currentState != null )
@@ -56,4 +86,24 @@ public class StateMachineV3 : MonoBehaviour
         currentState.OnEnter();
     }
 
+    public void OnMove( InputAction.CallbackContext context )
+    {
+        switch ( context.phase )
+        {
+            case InputActionPhase.Disabled:
+                break;
+            case InputActionPhase.Waiting:
+                break;
+            case InputActionPhase.Started:
+                break;
+            case InputActionPhase.Performed:
+                _moveDirection = context.ReadValue<float>();
+                break;
+            case InputActionPhase.Canceled:
+                _moveDirection = 0f;
+                break;
+            default:
+                break;
+        }
+    }
 }

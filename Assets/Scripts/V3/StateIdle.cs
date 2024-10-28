@@ -6,13 +6,10 @@ public class StateIdle : State
 
     public override void OnEnter()
     {
-        Debug.Log( "J'entre dans l'état IDLE" );
-        machine.srenderer.color = Color.red;
     }
 
     public override void OnExit()
     {
-        Debug.Log( "Je sors dans l'état IDLE" );
     }
 
     public override void OnFixedUpdate()
@@ -25,7 +22,7 @@ public class StateIdle : State
 
     public override void OnUpdate()
     {
-        if( Time.time >= 5f )
+        if( machine.IsMoving )
         {
             machine.ChangeState( StateMachineV3.STATE_WALK );
         }
