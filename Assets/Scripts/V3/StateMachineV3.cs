@@ -4,26 +4,39 @@ using UnityEngine.InputSystem;
 
 public class StateMachineV3 : MonoBehaviour
 {
+    [Header("Speeds")]
+    public float currentSpeed = 0f;
+    public float walkSpeed = 6f;
+    public float runSpeed = 12f;
+
+    [Header( "Air Control" )]
+    public float jumpForce = 12f;
+    public float fallMultiplier = 1.2f;
+
     public Rigidbody2D rb2d;
     public SpriteRenderer srenderer;
-
 
     private Dictionary<string, State> _states = new();
     public State currentState;
 
     public const string STATE_IDLE = nameof( StateIdle );
     public const string STATE_WALK = nameof( StateWalk );
+    public const string STATE_JUMP = nameof( StateJump );
+    public const string STATE_FALL = nameof( StateFall );
 
     public bool IsMoving { 
         get { return _moveDirection != 0f; }
     }
     private float _moveDirection = 0f;
+    public bool IsJumping = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _states.Add( STATE_IDLE, new StateIdle( this ) );
         _states.Add( STATE_WALK, new StateWalk( this ) );
+        _states.Add( STATE_JUMP, new StateJump( this ) );
+        _states.Add( STATE_FALL, new StateFall( this ) );
 
         ChangeState( nameof( StateIdle ) );
     }
@@ -36,6 +49,7 @@ public class StateMachineV3 : MonoBehaviour
 
     private void FixedUpdate()
     {
+        rb2d.linearVelocityX = _moveDirection * currentSpeed;
         currentState.OnFixedUpdate();
     }
 
@@ -48,7 +62,6 @@ public class StateMachineV3 : MonoBehaviour
     public void OnGUI()
     {
         GUILayout.TextArea( currentState.ToString() );
-        GUILayout.TextArea( "Toto" );
     }
 #endif
 
@@ -101,6 +114,27 @@ public class StateMachineV3 : MonoBehaviour
                 break;
             case InputActionPhase.Canceled:
                 _moveDirection = 0f;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void OnJump( InputAction.CallbackContext context )
+    {
+        switch ( context.phase )
+        {
+            case InputActionPhase.Disabled:
+                break;
+            case InputActionPhase.Waiting:
+                break;
+            case InputActionPhase.Started:
+                break;
+            case InputActionPhase.Performed:
+                    IsJumping = true;
+                break;
+            case InputActionPhase.Canceled:
+                    IsJumping = false;
                 break;
             default:
                 break;

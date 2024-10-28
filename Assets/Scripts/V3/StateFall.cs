@@ -1,16 +1,17 @@
 using UnityEngine;
 
-public class StateWalk : State
+public class StateFall : State
 {
-    public StateWalk( StateMachineV3 _machine ) : base( _machine ) { }
+    public StateFall( StateMachineV3 _machine ) : base( _machine ) { }
 
     public override void OnEnter()
     {
-        machine.currentSpeed = machine.walkSpeed;
+        machine.rb2d.gravityScale = machine.fallMultiplier;
     }
 
     public override void OnExit()
     {
+        machine.rb2d.gravityScale = 1f;
     }
 
     public override void OnFixedUpdate()
@@ -23,13 +24,9 @@ public class StateWalk : State
 
     public override void OnUpdate()
     {
-        if( !machine.IsMoving )
+        if ( machine.rb2d.linearVelocityY == 0f )
         {
             machine.ChangeState( StateMachineV3.STATE_IDLE );
-        }
-        else if( machine.IsJumping )
-        {
-            machine.ChangeState( StateMachineV3.STATE_JUMP );
         }
     }
 }
