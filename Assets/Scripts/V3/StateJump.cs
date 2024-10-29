@@ -8,6 +8,7 @@ public class StateJump : State
     {
         //machine.rb2d.linearVelocityY = machine.jumpForce;
         machine.rb2d.AddForce( Vector2.up * machine.jumpForce, ForceMode2D.Impulse );
+        machine.IsJumping = false;
     }
 
     public override void OnExit()
@@ -16,6 +17,7 @@ public class StateJump : State
 
     public override void OnFixedUpdate()
     {
+        machine.HorizontalControl();
     }
 
     public override void OnTriggerEnter()

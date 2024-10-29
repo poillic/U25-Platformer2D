@@ -6,7 +6,7 @@ public class StateIdle : State
 
     public override void OnEnter()
     {
-        machine.currentSpeed = 0f;
+        //machine.currentSpeed = 0f;
     }
 
     public override void OnExit()
@@ -30,6 +30,10 @@ public class StateIdle : State
         else if ( machine.IsJumping )
         {
             machine.ChangeState( StateMachineV3.STATE_JUMP );
+        }
+        else if( !machine.isGrounded )
+        {
+            machine.ChangeState( StateMachineV3.STATE_FALL );
         }
     }
 }

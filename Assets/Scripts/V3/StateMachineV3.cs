@@ -6,12 +6,20 @@ public class StateMachineV3 : MonoBehaviour
 {
     [Header("Speeds")]
     public float currentSpeed = 0f;
+    public float acceleration = 52f;
+    public float deceleration = 52f;
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
 
     [Header( "Air Control" )]
     public float jumpForce = 12f;
     public float fallMultiplier = 1.2f;
+
+    [Header( "Ground Detection" )]
+    public bool isGrounded = false;
+    public LayerMask groundMask;
+    public Transform groundChecker;
+    public Vector2 groundCheckerDimension;
 
     public Rigidbody2D rb2d;
     public SpriteRenderer srenderer;
@@ -27,6 +35,12 @@ public class StateMachineV3 : MonoBehaviour
     public bool IsMoving { 
         get { return _moveDirection != 0f; }
     }
+
+    public float MoveDirection
+    {
+        get { return _moveDirection; }
+    }
+
     private float _moveDirection = 0f;
     public bool IsJumping = false;
 
@@ -51,6 +65,9 @@ public class StateMachineV3 : MonoBehaviour
     {
         rb2d.linearVelocityX = _moveDirection * currentSpeed;
         currentState.OnFixedUpdate();
+
+        Collider2D overlapCollider = Physics2D.OverlapBox( groundChecker.position, groundCheckerDimension, 0, groundMask );
+        isGrounded = overlapCollider != null;
     }
 
     private void OnTriggerEnter2D( Collider2D collision )
@@ -67,8 +84,7 @@ public class StateMachineV3 : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        
-        if( IsMoving )
+        if( isGrounded )
         {
             Gizmos.color = Color.green;
         }
@@ -76,10 +92,7 @@ public class StateMachineV3 : MonoBehaviour
         {
             Gizmos.color = Color.red;
         }
-
-        Gizmos.DrawCube( transform.position, Vector3.one );
-
-        Gizmos.DrawLine( transform.position, transform.right );
+        Gizmos.DrawCube( groundChecker.position, groundCheckerDimension );
     }
 
     public void ChangeState( string stateName )
@@ -90,7 +103,7 @@ public class StateMachineV3 : MonoBehaviour
         }*/
 
 #if UNITY_EDITOR
-        Debug.Log( "Exiting : " + nameof( currentState ) );
+        Debug.Log( "Exiting : " + currentSpeed.ToString() );
         Debug.Log( "Entering : " + stateName );
 #endif
 
@@ -99,6 +112,28 @@ public class StateMachineV3 : MonoBehaviour
         currentState.OnEnter();
     }
 
+    #region PhysX
+
+    public void HorizontalControl()
+    {
+        float maxSpeedChange = 0f;
+        if ( IsMoving )
+        {
+            maxSpeedChange = acceleration * Time.deltaTime;
+            currentSpeed = Mathf.MoveTowards( Mathf.Abs( rb2d.linearVelocityX ), walkSpeed, maxSpeedChange );
+        }
+        else
+        {
+            maxSpeedChange = deceleration * Time.deltaTime;
+            Debug.Log($"{Mathf.Abs( rb2d.linearVelocityX )} {maxSpeedChange }" );
+            currentSpeed = Mathf.MoveTowards( Mathf.Abs( rb2d.linearVelocityX ), 0f, maxSpeedChange );
+        }
+
+    }
+
+    #endregion
+
+    #region Input Management 
     public void OnMove( InputAction.CallbackContext context )
     {
         switch ( context.phase )
@@ -140,4 +175,6 @@ public class StateMachineV3 : MonoBehaviour
                 break;
         }
     }
+
+    #endregion
 }

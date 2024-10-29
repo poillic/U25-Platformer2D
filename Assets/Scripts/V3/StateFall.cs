@@ -16,6 +16,7 @@ public class StateFall : State
 
     public override void OnFixedUpdate()
     {
+        machine.HorizontalControl();
     }
 
     public override void OnTriggerEnter()
@@ -24,9 +25,16 @@ public class StateFall : State
 
     public override void OnUpdate()
     {
-        if ( machine.rb2d.linearVelocityY == 0f )
+        if ( machine.isGrounded )
         {
-            machine.ChangeState( StateMachineV3.STATE_IDLE );
+            if( machine.IsMoving )
+            {
+                machine.ChangeState( StateMachineV3.STATE_WALK );
+            }
+            else
+            {
+                machine.ChangeState( StateMachineV3.STATE_IDLE );
+            }
         }
     }
 }
