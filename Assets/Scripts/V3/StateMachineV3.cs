@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 public class StateMachineV3 : MonoBehaviour
 {
     [Header("Speeds")]
-    public float currentSpeed = 0f;
+    private float currentSpeed = 0f;
+    [HideInInspector] public float currentMaxSpeed = 0f;
     public float acceleration = 52f;
     public float deceleration = 52f;
     public float walkSpeed = 6f;
@@ -13,6 +14,7 @@ public class StateMachineV3 : MonoBehaviour
 
     [Header( "Air Control" )]
     public float jumpForce = 12f;
+    public float jumpHeight = 2.5f;
     public float fallMultiplier = 1.2f;
 
     [Header( "Ground Detection" )]
@@ -63,7 +65,7 @@ public class StateMachineV3 : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb2d.linearVelocityX = _moveDirection * currentSpeed;
+        rb2d.linearVelocityX = currentSpeed;
         currentState.OnFixedUpdate();
 
         Collider2D overlapCollider = Physics2D.OverlapBox( groundChecker.position, groundCheckerDimension, 0, groundMask );
@@ -78,7 +80,8 @@ public class StateMachineV3 : MonoBehaviour
 #if UNITY_EDITOR
     public void OnGUI()
     {
-        GUILayout.TextArea( currentState.ToString() );
+        GUILayout.Label( currentState.ToString() );
+        GUILayout.Label( $" Current Speed : {currentSpeed.ToString("0.0")}" );
     }
 #endif
 
@@ -97,16 +100,6 @@ public class StateMachineV3 : MonoBehaviour
 
     public void ChangeState( string stateName )
     {
-        /*if( currentState != null )
-        {
-            currentState.OnExit();
-        }*/
-
-#if UNITY_EDITOR
-        Debug.Log( "Exiting : " + currentSpeed.ToString() );
-        Debug.Log( "Entering : " + stateName );
-#endif
-
         currentState?.OnExit();
         currentState = _states[ stateName ];
         currentState.OnEnter();
@@ -117,18 +110,18 @@ public class StateMachineV3 : MonoBehaviour
     public void HorizontalControl()
     {
         float maxSpeedChange = 0f;
+        float targetVelocity = _moveDirection * currentMaxSpeed;
+
         if ( IsMoving )
         {
             maxSpeedChange = acceleration * Time.deltaTime;
-            currentSpeed = Mathf.MoveTowards( Mathf.Abs( rb2d.linearVelocityX ), walkSpeed, maxSpeedChange );
         }
         else
         {
             maxSpeedChange = deceleration * Time.deltaTime;
-            Debug.Log($"{Mathf.Abs( rb2d.linearVelocityX )} {maxSpeedChange }" );
-            currentSpeed = Mathf.MoveTowards( Mathf.Abs( rb2d.linearVelocityX ), 0f, maxSpeedChange );
         }
 
+        currentSpeed = Mathf.MoveTowards( rb2d.linearVelocityX, targetVelocity, maxSpeedChange );
     }
 
     #endregion

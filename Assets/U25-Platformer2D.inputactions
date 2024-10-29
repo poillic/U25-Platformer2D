@@ -132,7 +132,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
+                    "name": "KeyboardArrows",
                     "id": "c4b154aa-77a6-45cd-b960-5ca983a2bec3",
                     "path": "1DAxis",
                     "interactions": "",
@@ -165,6 +165,39 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "GamepadStick",
+                    "id": "171a10e4-b326-4adb-8da8-43f2d26a9fd7",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "c75b16da-2a83-4323-889d-8b441bbb9237",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "98ae2eed-780d-4020-9244-3e28aaeac423",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "ae573076-1ff2-4a05-918c-3a19fb857ed1",
                     "path": "<Keyboard>/space",
@@ -179,6 +212,17 @@
                     "name": "",
                     "id": "914919ba-f27c-420e-be60-9cd6f7532037",
                     "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab38533f-13a1-49e9-82e5-000d033ab88c",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

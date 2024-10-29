@@ -15,6 +15,7 @@ public class StateIdle : State
 
     public override void OnFixedUpdate()
     {
+        machine.HorizontalControl();
     }
 
     public override void OnTriggerEnter()

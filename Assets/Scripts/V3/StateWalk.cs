@@ -5,7 +5,7 @@ public class StateWalk : State
     public StateWalk( StateMachineV3 _machine ) : base( _machine ) { }
     public override void OnEnter()
     {
-        //machine.currentSpeed = machine.walkSpeed;
+        machine.currentMaxSpeed = machine.walkSpeed;
     }
 
     public override void OnExit()

@@ -7,8 +7,9 @@ public class StateJump : State
     public override void OnEnter()
     {
         //machine.rb2d.linearVelocityY = machine.jumpForce;
-        machine.rb2d.AddForce( Vector2.up * machine.jumpForce, ForceMode2D.Impulse );
-        machine.IsJumping = false;
+        float jumpSpeed = Mathf.Sqrt( -2f * Physics2D.gravity.y * machine.rb2d.gravityScale * machine.jumpHeight );
+        machine.rb2d.AddForce( Vector2.up * jumpSpeed, ForceMode2D.Impulse );
+        //machine.IsJumping = false;
     }
 
     public override void OnExit()
@@ -27,7 +28,7 @@ public class StateJump : State
 
     public override void OnUpdate()
     {
-        if( machine.rb2d.linearVelocityY < 0f )
+        if( machine.rb2d.linearVelocityY < 0f || !machine.IsJumping )
         {
             machine.ChangeState( StateMachineV3.STATE_FALL );
         }

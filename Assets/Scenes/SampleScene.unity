@@ -647,7 +647,7 @@ Transform:
   m_GameObject: {fileID: 691940570}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2635, y: -4.75, z: 0}
+  m_LocalPosition: {x: -0.2635, y: -4.5, z: 0}
   m_LocalScale: {x: 22.579369, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -780,13 +780,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68affa02ee64af348941a0afc731f59c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSpeed: 0
-  acceleration: 10
-  deceleration: 10
+  currentMaxSpeed: 0
+  acceleration: 70
+  deceleration: 70
   walkSpeed: 9
   runSpeed: 12
   jumpForce: 6
+  jumpHeight: 2
   fallMultiplier: 1.8
+  isGrounded: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 64
@@ -859,7 +861,7 @@ Transform:
   m_GameObject: {fileID: 1087684319}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.68, y: -1.88, z: 0}
+  m_LocalPosition: {x: -3.68, y: -2.874, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
