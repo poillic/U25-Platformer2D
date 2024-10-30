@@ -28,13 +28,17 @@ public class StateIdle : State
         {
             machine.ChangeState( StateMachineV3.STATE_WALK );
         }
-        else if ( machine.IsJumping )
+        else if ( machine.jumpBuffer && machine.CanJump )
         {
             machine.ChangeState( StateMachineV3.STATE_JUMP );
         }
         else if( !machine.isGrounded )
         {
             machine.ChangeState( StateMachineV3.STATE_FALL );
+        }
+        else if ( machine.CanDash )
+        {
+            machine.ChangeState( StateMachineV3.STATE_DASH );
         }
     }
 }

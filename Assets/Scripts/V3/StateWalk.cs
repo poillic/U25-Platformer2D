@@ -24,11 +24,15 @@ public class StateWalk : State
 
     public override void OnUpdate()
     {
-        if( machine.rb2d.linearVelocityX == 0f && !machine.IsMoving  )
+
+        if ( machine.CanDash ) {
+            machine.ChangeState( StateMachineV3.STATE_DASH );
+        }
+        else if( machine.rb2d.linearVelocityX == 0f && !machine.IsMoving  )
         {
             machine.ChangeState( StateMachineV3.STATE_IDLE );
         }
-        else if( machine.IsJumping )
+        else if ( machine.jumpBuffer && machine.CanJump )
         {
             machine.ChangeState( StateMachineV3.STATE_JUMP );
         }
